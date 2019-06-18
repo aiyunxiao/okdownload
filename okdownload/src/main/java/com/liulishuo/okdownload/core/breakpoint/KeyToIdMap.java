@@ -61,6 +61,10 @@ public class KeyToIdMap {
     }
 
     String generateKey(@NonNull DownloadTask task) {
+        String key = task.getKey();
+        if (key != null && !key.isEmpty()) {
+            return key;
+        }
         return task.getUrl() + task.getUri() + task.getFilename();
     }
 }
