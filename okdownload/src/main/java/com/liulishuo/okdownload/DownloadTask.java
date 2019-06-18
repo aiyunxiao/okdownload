@@ -93,13 +93,17 @@ public class DownloadTask extends IdentifiedTask implements Comparable<DownloadT
     @Nullable private File targetFile;
     @Nullable private String redirectLocation;
 
+    // iyunxiao 添加的属性，辅导下载任务的唯一标识，因为辅导下载的url同一个视频受token影响。不同时间获取的下载url不同
+    private String key;
+
     public DownloadTask(String url, Uri uri, int priority, int readBufferSize, int flushBufferSize,
                         int syncBufferSize, int syncBufferIntervalMills,
                         boolean autoCallbackToUIThread, int minIntervalMillisCallbackProcess,
                         Map<String, List<String>> headerMapFields, @Nullable String filename,
                         boolean passIfAlreadyCompleted, boolean wifiRequired,
                         Boolean filenameFromResponse, @Nullable Integer connectionCount,
-                        @Nullable Boolean isPreAllocateLength) {
+                        @Nullable Boolean isPreAllocateLength,
+    String key) {
         this.url = url;
         this.uri = uri;
         this.priority = priority;
@@ -115,7 +119,7 @@ public class DownloadTask extends IdentifiedTask implements Comparable<DownloadT
         this.wifiRequired = wifiRequired;
         this.connectionCount = connectionCount;
         this.isPreAllocateLength = isPreAllocateLength;
-
+        this.key = key;
         if (Util.isUriFileScheme(uri)) {
             final File file = new File(uri.getPath());
             if (filenameFromResponse != null) {
@@ -708,7 +712,7 @@ public class DownloadTask extends IdentifiedTask implements Comparable<DownloadT
         private Boolean isFilenameFromResponse;
         private Integer connectionCount;
         private Boolean isPreAllocateLength;
-
+        private String key;
         /**
          * Set whether need to pre allocate length for the file after get the resource-length from
          * trial-connection.
@@ -907,6 +911,11 @@ public class DownloadTask extends IdentifiedTask implements Comparable<DownloadT
             return this;
         }
 
+        public Builder setKey(String key){
+            this.key = key;
+            return this;
+        }
+
         /**
          * Build the task through the builder.
          *
@@ -917,7 +926,7 @@ public class DownloadTask extends IdentifiedTask implements Comparable<DownloadT
                     syncBufferSize, syncBufferIntervalMillis,
                     autoCallbackToUIThread, minIntervalMillisCallbackProcess,
                     headerMapFields, filename, passIfAlreadyCompleted, isWifiRequired,
-                    isFilenameFromResponse, connectionCount, isPreAllocateLength);
+                    isFilenameFromResponse, connectionCount, isPreAllocateLength,key);
         }
     }
 
@@ -950,7 +959,9 @@ public class DownloadTask extends IdentifiedTask implements Comparable<DownloadT
     public static MockTaskForCompare mockTaskForCompare(int id) {
         return new MockTaskForCompare(id);
     }
-
+    public String getKey() {
+        return key;
+    }
     @NonNull public MockTaskForCompare mock(int id) {
         return new MockTaskForCompare(id, this);
     }

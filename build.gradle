@@ -1,10 +1,16 @@
 subprojects {
     buildscript {
         repositories {
+            maven {url 'http://maven.aliyun.com/nexus/content/groups/public'}
+            jcenter()
+            google()
             mavenCentral()
         }
     }
     repositories {
+        maven {url 'http://maven.aliyun.com/nexus/content/groups/public'}
+        jcenter()
+        google()
         mavenCentral()
     }
 
@@ -16,8 +22,10 @@ apply from: rootProject.file('gradle/dependencies.gradle')
 
 buildscript {
     repositories {
+        maven {url 'http://maven.aliyun.com/nexus/content/groups/public'}
         jcenter()
         google()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.liulishuo.okcheck:gradle:0.2.8'
@@ -30,8 +38,10 @@ buildscript {
 allprojects {
     apply plugin: 'okcheck'
     repositories {
+        maven {url 'http://maven.aliyun.com/nexus/content/groups/public'}
         google()
         jcenter()
+
     }
 
     okcheck {
