@@ -18,7 +18,8 @@ dependencies {
 
 
 ### 迭代记录
-    v1.0.5.1 修改源码。增加key字段 
+    v1.0.5.1 修改源码。增加key字段
+    v1.0.5.2 修改源码，修复了这个问题 https://github.com/lingochamp/okdownload/issues/339
 
 
 ###  修改源码记录
@@ -164,4 +165,23 @@ dependencies {
            }
            return task.getUrl() + task.getUri() + task.getFilename();
        }
-```     
+```
+    v1.0.5.2中MultiPointOutputStream类修改
+```java
+    synchronized void close(int blockIndex) throws IOException {
+            final DownloadOutputStream outputStream = outputStreamMap.get(blockIndex);
+            if (outputStream != null) {
+                outputStream.close();
+                outputStreamMap.remove(blockIndex);
+                noSyncLengthMap.remove(blockIndex);
+                Util.d(TAG, "OutputStream close task[" + task.getId() + "] block[" + blockIndex + "]");
+            }
+        }
+```
+
+### 发布版本的流程
+    1.将工程clone到本地，切个人分支进行修改
+    2.提交代码推到远程
+    3.发起pull request，将个人分支合到master分支
+    4.create a new release
+    5.引用新的release版本
