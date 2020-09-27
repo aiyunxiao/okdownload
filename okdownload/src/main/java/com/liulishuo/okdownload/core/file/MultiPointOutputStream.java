@@ -281,6 +281,7 @@ public class MultiPointOutputStream {
         if (outputStream != null) {
             outputStream.close();
             outputStreamMap.remove(blockIndex);
+            noSyncLengthMap.remove(blockIndex);
             Util.d(TAG, "OutputStream close task[" + task.getId() + "] block[" + blockIndex + "]");
         }
     }
